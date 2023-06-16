@@ -9,38 +9,23 @@ import java.util.*;
 
 public class FileServices {
 
-    public static void SalesMaps() throws Exception {
-
-
-    }
-
     static void getSalesTotalPerYear(File carSalesCSV, String carModelName) throws Exception {
-
-        System.out.println("------------");
+        System.out.println();
         System.out.println(carModelName + " Yearly Sales Report: ");
         System.out.println("------------");
 
-        //CSV to ArrayList
-
-//        Turn carSalesCSV into an ArrayList of CarSalesData POJOs
-        ArrayList<CarSalesData> carSalesDataPOJOArrayList = convertCSVToArrayList(carSalesCSV, carModelName);
-
-
+        ArrayList<CarSalesData> carSalesDataPOJOArrayList = convertCSVToArrayListOfCarSalesPojos(carSalesCSV, carModelName);
         Map<Integer, Integer> mapOfYearSales = getYearSalesFromArrayListOfCarSalesData(carSalesDataPOJOArrayList);
-
         printStreamOfSalesTotalPerYearFromMap(mapOfYearSales);
         System.out.println();
-
     }
 
     static void printStreamOfSalesTotalPerYearFromMap(Map<Integer, Integer> map) throws Exception {
-
         mapToEntrySet(map).stream()
                 .forEach(x -> System.out.println(x.getKey() + ": " + x.getValue()));
     }
 
-    public static ArrayList<CarSalesData> convertCSVToArrayList(File file, String carModelName) throws Exception {
-
+    public static ArrayList<CarSalesData> convertCSVToArrayListOfCarSalesPojos(File file, String carModelName) throws Exception {
         String line = "";
         String[] lineData = {};
         ArrayList<CarSalesData> carSalesDataArrayList = new ArrayList<>();
@@ -60,7 +45,6 @@ public class FileServices {
     }
 
 
-    //    Takes String date in provided CSVs, e.g. "JAN-19", converts to YearMonth
     public static YearMonth convertToYearMonth(String inputYearMonthMMMYY) {
 
         String formattedMMM = inputYearMonthMMMYY.substring(0, 1).toUpperCase()
@@ -96,10 +80,12 @@ public class FileServices {
         return carSalesYearTotals;
     }
 
-
+///////////////////////////////////////////////////////////////////
+///   Returns Optional<Integer> and prints in requested format  ///
+///////////////////////////////////////////////////////////////////
 
     public static Optional<Integer> returnBestMonthOptional(File file, String carModelName) throws Exception {
-        ArrayList<CarSalesData> carSalesDataArrayList = convertCSVToArrayList(file, carModelName);
+        ArrayList<CarSalesData> carSalesDataArrayList = convertCSVToArrayListOfCarSalesPojos(file, carModelName);
 
         Optional<YearMonth> bestMonthSales;
         bestMonthSales = carSalesDataArrayList.stream()
@@ -114,7 +100,7 @@ public class FileServices {
     }
 
     public static Optional<Integer> returnWorstMonthOptional(File file, String carModelName) throws Exception {
-        ArrayList<CarSalesData> carSalesDataArrayList = convertCSVToArrayList(file, carModelName);
+        ArrayList<CarSalesData> carSalesDataArrayList = convertCSVToArrayListOfCarSalesPojos(file, carModelName);
 
         Optional<YearMonth> worstMonthSales;
         worstMonthSales = carSalesDataArrayList.stream()
@@ -136,22 +122,4 @@ public class FileServices {
         return mapConvertedToEntrySet;
     }
 }
-
-
-//
-//    public static Optional<Integer> returnBestMonth(File file) throws Exception {
-//        ArrayList<CarSalesData> carSalesDataArrayList = convertToArrayList(file);
-//
-//        return Optional.of(carSalesDataArrayList.stream().mapToInt(CarSalesData::getSalesNumber)
-//                .max()
-//                .orElse(0));
-//    }
-//
-//    public static Optional<Integer> returnWorstMonth(File file) throws Exception {
-//        ArrayList<CarSalesData> carSalesDataArrayList = convertToArrayList(file);
-//
-//        return Optional.of(carSalesDataArrayList.stream().mapToInt(CarSalesData::getSalesNumber)
-//                .min()
-//                .orElse(0));
-//    }
 
