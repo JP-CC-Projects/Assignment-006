@@ -20,7 +20,7 @@ public class FileServices {
         System.out.println();
     }
 
-    static void printStreamOfSalesTotalPerYearFromMap(Map<Integer, Integer> map) throws Exception {
+    static void printStreamOfSalesTotalPerYearFromMap(Map<Integer, Integer> map){
         mapToEntrySet(map).stream()
                 .forEach(x -> System.out.println(x.getKey() + ": " + x.getValue()));
     }
@@ -94,7 +94,7 @@ public class FileServices {
 
         System.out.println("The best month for " + carModelName + " was: " + bestMonthSales.get());
 
-        return Optional.of(carSalesDataArrayList.stream().mapToInt(CarSalesData::getSalesNumber)
+        return Optional.ofNullable(carSalesDataArrayList.stream().mapToInt(CarSalesData::getSalesNumber)
                 .max()
                 .orElse(0));
     }
@@ -109,7 +109,7 @@ public class FileServices {
 
         System.out.println("The worst month for " + carModelName + " was: " + worstMonthSales.get());
 
-        return Optional.of(carSalesDataArrayList.stream().mapToInt(CarSalesData::getSalesNumber)
+        return Optional.ofNullable(carSalesDataArrayList.stream().mapToInt(CarSalesData::getSalesNumber)
                 .min()
                 .orElse(0));
     }
